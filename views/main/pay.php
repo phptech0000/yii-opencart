@@ -13,7 +13,6 @@ $this->title = 'Pay';
         </div>
         <div class="col-6">
             <div class="mt-5">
-            <p>Country: <?= \app\components\CustomFunction::getUserCountry(); ?></p>
                 <form>
                     <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
                     <div class="mb-3 mt-3">
@@ -29,8 +28,8 @@ $this->title = 'Pay';
             </div>
         </div>
     </div>
-    <link href="/web/plugin/toastr/toastr.css" rel="stylesheet" type="text/css" />
-    <script src="/web/plugin/toastr/toastr.js"></script>
+    <link href="/plugin/toastr/toastr.css" rel="stylesheet" type="text/css" />
+    <script src="/plugin/toastr/toastr.js"></script>
     <script>
     var csrfToken = $('meta[name="csrf-token"]').attr("content");
     toastr.options = {

@@ -3,8 +3,9 @@
 /** @var yii\web\View $this */
 
 use yii\helpers\Html;
-
+use app\components\CustomFunction;
 $this->title = 'Pay';
+$region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
 ?>
 <div class="container mt-3">
     <div class="row">
@@ -48,16 +49,8 @@ $this->title = 'Pay';
                         <input type="text" class="form-control mt-3" id="city" placeholder="Enter City" name="city">
                     </div>
                     <div class="mb-3">
-                        <label for="country">Country:</label>
-                        <select class="form-select mt-3" id="country_id">
-                            <option value="">Please Select Country</option>
-                            <?php
-                                foreach($country_data as $item){
-                            ?>
-                                    <option value="<?= $item['country_id'] ?>"> <?= $item['name'] ?></option>
-                            <?php
-                                }
-                            ?>
+                        <label for="country" class="mb-3">Country:</label>
+                        <select class="form-select select2 mt-3" id="country_id" name="country_id">
                         </select>
                     </div>
                     <button type="button" id="buyNow" class="btn btn-primary">Pay Now</button>
@@ -65,8 +58,11 @@ $this->title = 'Pay';
             </div>
         </div>
     </div>
-    <link href="/web/plugin/toastr/toastr.css" rel="stylesheet" type="text/css" />
-    <script src="/web/plugin/toastr/toastr.js"></script>
+    <link href="/css/flag-icon.min.css" rel="stylesheet" type="text/css" />
+    <link href="/plugin/toastr/toastr.css" rel="stylesheet" type="text/css" />
+    <script src="/plugin/toastr/toastr.js"></script>
+    <link href="/plugin/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <script src="/plugin/select2/select2.min.js"></script>
     <script>
     var csrfToken = $('meta[name="csrf-token"]').attr("content");
     toastr.options = {
@@ -85,18 +81,128 @@ $this->title = 'Pay';
     "hideEasing": "linear",
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
-    }
+    };
+    var isoCountries = [
+        { id: 'XX', text: 'Select Country'},
+        { id: 'AL', text: 'Albania'},
+        { id: 'AD', text: 'Andorra'},
+        { id: 'AO', text: 'Angola'},
+        { id: 'AR', text: 'Argentina'},
+        { id: 'AM', text: 'Armenia'},
+        { id: 'AW', text: 'Aruba'},
+        { id: 'AU', text: 'Australia'},
+        { id: 'AT', text: 'Austria'},
+        { id: 'AZ', text: 'Azerbaijan'},
+        { id: 'BD', text: 'Bangladesh'},
+        { id: 'BY', text: 'Belarus'},
+        { id: 'BE', text: 'Belgium'},
+        { id: 'BZ', text: 'Belize'},
+        { id: 'BO', text: 'Bolivia'},
+        { id: 'BA', text: 'Bosnia and herzegovina'},
+        { id: 'BR', text: 'Brazil'},
+        { id: 'BN', text: 'Brunei darussalam'},
+        { id: 'BG', text: 'Bulgaria'},
+        { id: 'CA', text: 'Canada'},
+        { id: 'CL', text: 'Chile'},
+        { id: 'CN', text: 'China'},
+        { id: 'CO', text: 'Colombia'},
+        { id: 'CR', text: 'Costa rica'},
+        { id: 'HR', text: 'Croatia'},
+        { id: 'CW', text: 'Curacao'},
+        { id: 'CY', text: 'Cyprus'},
+        { id: 'CZ', text: 'Czech republic'},
+        { id: 'DK', text: 'Denmark'},
+        { id: 'DO', text: 'Dominican republic'},
+        { id: 'EC', text: 'Ecuador'},
+        { id: 'SV', text: 'El salvador'},
+        { id: 'EE', text: 'Estonia'},
+        { id: 'FO', text: 'Faroe islands'},
+        { id: 'FI', text: 'Finland'},
+        { id: 'FR', text: 'France'},
+        { id: 'DE', text: 'Germany'},
+        { id: 'GH', text: 'Ghana'},
+        { id: 'GR', text: 'Greece'},
+        { id: 'GL', text: 'Greenland'},
+        { id: 'GT', text: 'Guatemala'},
+        { id: 'GG', text: 'Guernsey'},
+        { id: 'HK', text: 'Hong kong'},
+        { id: 'HU', text: 'Hungary'},
+        { id: 'IS', text: 'Iceland'},
+        { id: 'IN', text: 'India'},
+        { id: 'ID', text: 'Indonesia'},
+        { id: 'IE', text: 'Ireland'},
+        { id: 'IM', text: 'Isle of man'},
+        { id: 'IL', text: 'Israel'},
+        { id: 'IT', text: 'Italy'},
+        { id: 'JP', text: 'Japan'},
+        { id: 'JE', text: 'Jersey'},
+        { id: 'KZ', text: 'Kazakhstan'},
+        { id: 'KW', text: 'Kuwait'},
+        { id: 'LV', text: 'Latvia'},
+        { id: 'LI', text: 'Liechtenstein'},
+        { id: 'LT', text: 'Lithuania'},
+        { id: 'LU', text: 'Luxembourg'},
+        { id: 'MO', text: 'Macao'},
+        { id: 'MK', text: 'Macedonia'},
+        { id: 'MY', text: 'Malaysia'},
+        { id: 'MT', text: 'Malta'},
+        { id: 'MH', text: 'Marshall islands'},
+        { id: 'MU', text: 'Mauritius'},
+        { id: 'MX', text: 'Mexico'},
+        { id: 'MD', text: 'Moldova'},
+        { id: 'MC', text: 'Monaco'},
+        { id: 'MZ', text: 'Mozambique'},
+        { id: 'NR', text: 'Nauru'},
+        { id: 'NL', text: 'Netherlands'},
+        { id: 'NZ', text: 'New zealand'},
+        { id: 'NO', text: 'Norway'},
+        { id: 'PK', text: 'Pakistan'},
+        { id: 'PA', text: 'Panama'},
+        { id: 'PY', text: 'Paraguay'},
+        { id: 'PE', text: 'Peru'},
+        { id: 'PH', text: 'Philippines'},
+        { id: 'PL', text: 'Poland'},
+        { id: 'PT', text: 'Portugal'},
+        { id: 'RO', text: 'Romania'},
+        { id: 'RU', text: 'Russia'},
+        { id: 'LC', text: 'Saint lucia'},
+        { id: 'WS', text: 'Samoa'},
+        { id: 'SM', text: 'San marino'},
+        { id: 'SA', text: 'Saudi arabia'},
+        { id: 'RS', text: 'Serbia'},
+        { id: 'SC', text: 'Seychelles'},
+        { id: 'SG', text: 'Singapore'},
+        { id: 'SK', text: 'Slovak republic'},
+        { id: 'SI', text: 'Slovenia'},
+        { id: 'ZA', text: 'South africa'},
+        { id: 'KR', text: 'South korea'},
+        { id: 'ES', text: 'Spain'},
+        { id: 'SE', text: 'Sweden'},
+        { id: 'CH', text: 'Switzerland'},
+        { id: 'TW', text: 'Taiwan'},
+        { id: 'TH', text: 'Thailand'},
+        { id: 'TT', text: 'Trinidad and tobago'},
+        { id: 'TR', text: 'Turkey'},
+        { id: 'UA', text: 'Ukraine'},
+        { id: 'AE', text: 'United arab emirates'},
+        { id: 'GB', text: 'United kingdom'},
+        { id: 'UY', text: 'Uruguay'},
+        { id: 'US', text: 'USA'},
+        { id: 'VE', text: 'Venezuela'},
+        { id: 'VN', text: 'Vietnam'},
+    ];
     $(":input").change(function(){
         var name = $(this).attr("name");
         var value = $(this).val();
         localStorage.setItem(name, value);
     });
-    $("select").change(function(){
-        var name = "country_id";
-        var value = $(this).val();
-        localStorage.setItem(name, value);
-    });
     $(document).ready(function(){
+        $("#country_id").select2({
+            placeholder: "Select a country",
+            templateResult: formatCountry,
+            templateSelection: formatCountry,
+            data: isoCountries
+        });
         var firstName = localStorage.getItem('first_name');
         var last_name = localStorage.getItem('last_name');
         var email = localStorage.getItem('email');
@@ -106,6 +212,9 @@ $this->title = 'Pay';
         var zip = localStorage.getItem('zip');
         var city = localStorage.getItem('city');
         var country_id = localStorage.getItem('country_id');
+        if(!country_id){
+            country_id = "<?= $region ?>";
+        }
         $("#firstName").val(firstName);
         $("#lastName").val(last_name);
         $("#email").val(email);
@@ -114,7 +223,17 @@ $this->title = 'Pay';
         $("#street2").val(street2);
         $("#zip").val(zip);
         $("#city").val(city);
-        $("#country_id").val(country_id);
+        $('#country_id').val(country_id).change();
+        function formatCountry(country) {
+            if (!country.id) {
+                return country.text;
+            }
+            var $country = $(
+                '<span class="flag-icon flag-icon-' + country.id.toLowerCase() + ' flag-icon-squared"></span>' +
+                '<span class="flag-text">' + country.text + "</span>"
+            );
+            return $country;
+        }
     });
     $("#buyNow").click(function(){
         var firstName = $("#firstName").val();

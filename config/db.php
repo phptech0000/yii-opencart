@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=185.55.243.137;dbname=alphagel',
-    'username' => 'alphagel-db',
-    'password' => 'vA1ahOtNW0D1EtcvBGs0',
+    'dsn' => 'mysql:host=localhost;dbname=shopping_cart',
+    'username' => 'root',
+    'password' => '',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
