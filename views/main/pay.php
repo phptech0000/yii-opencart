@@ -13,6 +13,7 @@ $this->title = 'Pay';
         </div>
         <div class="col-6">
             <div class="mt-5">
+            <p>Country: <?= \app\components\CustomFunction::getUserCountry(); ?></p>
                 <form>
                     <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
                     <div class="mb-3 mt-3">

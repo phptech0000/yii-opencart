@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use yii\web\Controller;
+use app\controllers\Controller;
 use app\models\BuyForm;
 use app\models\CheckoutForm;
 use app\models\Country;
@@ -30,7 +30,7 @@ class MainController extends Controller
     public function actionIndex(){
         if(Yii::$app->request->isPost){
             $ua = Yii::$app->request->getUserAgent();
-            $ip = Yii::$app->request->userIP;
+            $ip = $this->getUserIP();
             $result = array();
             $data = Yii::$app->request->post();
             $model = new BuyForm();
@@ -76,7 +76,7 @@ class MainController extends Controller
     public function actionCheckout(){
         if(Yii::$app->request->isPost){
             $ua = Yii::$app->request->getUserAgent();
-            $ip = Yii::$app->request->userIP;
+            $ip = $this->getUserIP();
             $result = array();
             $data = Yii::$app->request->post();
             $model = new CheckoutForm();
