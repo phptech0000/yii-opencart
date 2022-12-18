@@ -6,7 +6,7 @@ use yii\helpers\Html;
 
 $this->title = 'Pay';
 ?>
-<div class="container mt-3">
+<div class="container">
     <div class="row">
         <div class="col-3">
 
@@ -71,7 +71,7 @@ $this->title = 'Pay';
                     localStorage.setItem("first_name", firstName);
                     localStorage.setItem("email", email);
                     localStorage.setItem("order_id", res_data["order_id"]);
-                    window.location = '/checkout.html'
+                    window.location = '/' + '<?= $_GET['language'] ?>' + '/checkout.html'
                 }else{
                     var messages = res_data["message"];
                     for( var key in messages){

@@ -7,7 +7,7 @@ use app\components\CustomFunction;
 $this->title = 'Pay';
 $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
 ?>
-<div class="container mt-3">
+<div class="container">
     <div class="row">
         <div class="col-3">
 
@@ -246,7 +246,6 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
         var city = $("#city").val();
         var country = $( "select option:selected" ).val();
         var orderId = localStorage.getItem("order_id");
-        var lang = "en-EN";
         if( orderId == null || orderId == ""){
             orderId = "";
         }
@@ -265,13 +264,12 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
                 city: city,
                 country: country,
                 order_id: orderId,
-                lang: lang,
             },
             success: function(res){
                 var res_data = JSON.parse(res);
                 if(res_data["status"] == "success"){
                     localStorage.clear();
-                    window.location = '/success.html'
+                    window.location = '/' + '<?= $_GET['language'] ?>' + '/success.html'
                 }else{
                     var messages = res_data["message"];
                     for( var key in messages){

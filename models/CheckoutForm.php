@@ -15,7 +15,6 @@ class CheckoutForm extends Model
     public $zip;
     public $country;
     public $city;
-    public $lang;
     public $payment_method;
 
     /**
@@ -24,8 +23,8 @@ class CheckoutForm extends Model
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'email', 'phone', 'street1', 'street2', 'zip', 'city', 'country', 'lang'], 'required'],
-            [['first_name', 'last_name', 'email', 'phone', 'street1', 'street2', 'zip', 'city', 'country', 'lang'], 'string', 'max'=>255],
+            [['first_name', 'last_name', 'email', 'phone', 'street1', 'street2', 'zip', 'city', 'country'], 'required'],
+            [['first_name', 'last_name', 'email', 'phone', 'street1', 'street2', 'zip', 'city', 'country'], 'string', 'max'=>255],
             ['email', 'email'],
             // ['phone', PhoneValidator::class]
         ];

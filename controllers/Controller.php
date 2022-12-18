@@ -1,11 +1,15 @@
 <?php    
 namespace app\controllers;
-
+use Yii;
 class Controller extends \yii\web\Controller
 {
     public function init(){
+        if (!empty($_GET['language'])){
+            Yii::$app->language = $_GET['language'];
+        }else{
+            Yii::$app->language = 'en';
+        }
         parent::init();
-
     }
     public function getUserIP(){
         $ip = "";

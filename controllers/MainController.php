@@ -9,6 +9,7 @@ use app\models\CheckoutForm;
 use app\models\Country;
 use app\models\Order;
 use \yii\db\Expression;
+use yii\helpers\Url;
 
 class MainController extends Controller
 {
@@ -46,6 +47,7 @@ class MainController extends Controller
                 $order->order_status = "Uncompleted";
                 $order->first_name = $data['first_name'];
                 $order->email = $data['email'];
+                $order->lang = $_GET["language"];
                 $order->ua = $ua;
                 $order->ip = $ip;
                 $order->save();
@@ -89,7 +91,6 @@ class MainController extends Controller
             $model->city = $data['city'];
             $model->zip = $data['zip'];
             $model->country = $data['country'];
-            $model->lang = $data['lang'];
             // $model->payment_method = $data['payment_method'];
             if( $model->validate() ){
                 if($data["order_id"]){
@@ -108,7 +109,7 @@ class MainController extends Controller
                 $order->zip = $data['zip'];
                 $order->city = $data['city'];
                 $order->country = $data['country'];
-                $order->lang = $data['lang'];
+                $order->lang = $_GET["language"];
                 // $order->payment_method = $data['payment_method'];
                 $order->ua = $ua;
                 $order->ip = $ip;
@@ -130,6 +131,7 @@ class MainController extends Controller
     }
 
     public function actionHome(){
-        return $this->redirect('/index.html');
+        $url =Yii::$app->language . "/index.html";
+        return $this->redirect($url);
     }
 }

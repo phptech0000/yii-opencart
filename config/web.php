@@ -12,6 +12,8 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'sourceLanguage' => 'ru' ,
+        'language ' => 'en' ,
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'b_OBWIyY6Lu9OiQqjBBta6IsBGAqiiqE',
@@ -51,17 +53,17 @@ $config = [
                 '' => 'main/home',
                 '/' => 'main/home',
                 [
-                    'pattern' => 'index',
+                    'pattern' => '<language:(en|de|nl)>/index',
                     'route' => 'main/index',
                     'suffix' => '.html',
                 ],  
                 [
-                    'pattern' => 'checkout',
+                    'pattern' => '<language:(en|de|nl)>/checkout',
                     'route' => 'main/checkout',
                     'suffix' => '.html',
                 ], 
                 [
-                    'pattern' => 'success',
+                    'pattern' => '<language:(en|de|nl)>/success',
                     'route' => 'main/success',
                     'suffix' => '.html',
                 ],   
