@@ -9,6 +9,7 @@ use yii\captcha\Captcha;
 $this->title = 'Pay';
 
 $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
+$language = CustomFunction::getLang();
 ?>
 <div class="container">
     <div class="row">
@@ -286,7 +287,11 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
                 var res_data = JSON.parse(res);
                 if(res_data["status"] == "success"){
                     localStorage.clear();
-                    window.location = '/' + '<?= $_GET['language'] ?>' + '/success.html'
+                    if('<?= $language ?>'){
+                        window.location = '/' + '<?= $language ?>' + '/success.html'
+                    }else{
+                        window.location = '/success.html'
+                    }
                 }else{
                     var messages = res_data["message"];
                     for( var key in messages){

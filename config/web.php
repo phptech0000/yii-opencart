@@ -49,18 +49,33 @@ $config = [
             'enableStrictParsing' => true,
             'rules' => array(
                 '' => 'main/home',
-                '/' => 'main/home',
+                '/<language:(en|de|nl)>?' => 'main/home',
                 'main/captcha' => 'main/captcha',
+                [
+                    'pattern' => '/index',
+                    'route' => 'main/index',
+                    'suffix' => '.html',
+                ], 
                 [
                     'pattern' => '<language:(en|de|nl)>/index',
                     'route' => 'main/index',
                     'suffix' => '.html',
-                ],  
+                ],
+                [
+                    'pattern' => '/checkout',
+                    'route' => 'main/checkout',
+                    'suffix' => '.html',
+                ],   
                 [
                     'pattern' => '<language:(en|de|nl)>/checkout',
                     'route' => 'main/checkout',
                     'suffix' => '.html',
                 ], 
+                [
+                    'pattern' => '/success',
+                    'route' => 'main/success',
+                    'suffix' => '.html',
+                ],
                 [
                     'pattern' => '<language:(en|de|nl)>/success',
                     'route' => 'main/success',

@@ -7,7 +7,7 @@ class Controller extends \yii\web\Controller
         if (!empty($_GET['language'])){
             Yii::$app->language = $_GET['language'];
         }else{
-            Yii::$app->language = 'en';
+            Yii::$app->language = '';
         }
         parent::init();
     }

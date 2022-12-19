@@ -14,6 +14,7 @@ use app\models\BuyForm;
 use app\models\CheckoutForm;
 use app\models\Country;
 use app\models\Order;
+use app\components\CustomFunction;
 
 class MainController extends Controller
 {
@@ -81,7 +82,7 @@ class MainController extends Controller
                 $order->order_status = "Uncompleted";
                 $order->first_name = $data['first_name'];
                 $order->email = $data['email'];
-                $order->lang = $_GET["language"];
+                $order->lang = CustomFunction::getLang();
                 $order->ua = $ua;
                 $order->ip = $ip;
                 $order->save();
@@ -149,7 +150,7 @@ class MainController extends Controller
                 $order->zip = $data['zip'];
                 $order->city = $data['city'];
                 $order->country = $data['country'];
-                $order->lang = $_GET["language"];
+                $order->lang = CustomFunction::getLang();;
                 // $order->payment_method = $data['payment_method'];
                 $order->ua = $ua;
                 $order->ip = $ip;
@@ -171,7 +172,11 @@ class MainController extends Controller
     }
 
     public function actionHome(){
-        $url =Yii::$app->language . "/index.html";
+        if($_COOKIE["language"]){
+            $url = $_COOKIE["language"] . "/index.html";
+        }else{
+            $url = Yii::$app->language . "/index.html";
+        }
         return $this->redirect($url);
     }
 }

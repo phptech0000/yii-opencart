@@ -4,11 +4,21 @@ namespace app\components;
 
 class CustomFunction
 {
-     public static function getUserCountry() {
+    public static function getUserCountry() {
         $country = "";
         if(isset($_SERVER["HTTP_CF_IPCOUNTRY"])){
             $country = $_SERVER["HTTP_CF_IPCOUNTRY"];
         }
         return $country;
-     }
+    }
+
+    public static function getLang(){
+        $language = "";
+        if(!empty($_GET['language'])){
+            $language = $_GET['language'];
+        }else{
+            $language = "";
+        }
+        return $language;
+    }
 }

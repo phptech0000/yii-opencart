@@ -4,8 +4,10 @@
 
 use yii\helpers\Html;
 use yii\captcha\Captcha;
+use app\components\CustomFunction;
 
 $this->title = 'Pay';
+$language = CustomFunction::getLang();
 ?>
 <div class="container">
     <div class="row">
@@ -93,7 +95,11 @@ $this->title = 'Pay';
                     localStorage.setItem("first_name", firstName);
                     localStorage.setItem("email", email);
                     localStorage.setItem("order_id", res_data["order_id"]);
-                    window.location = '/' + '<?= $_GET['language'] ?>' + '/checkout.html'
+                    if('<?= $language ?>'){
+                        window.location = '/' + '<?= $language ?>' + '/checkout.html'
+                    }else{
+                        window.location = '/checkout.html'
+                    }      
                 }else{
                     var messages = res_data["message"];
                     for( var key in messages){
