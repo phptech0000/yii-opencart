@@ -12,8 +12,6 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'sourceLanguage' => 'ru' ,
-        'language ' => 'en' ,
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'b_OBWIyY6Lu9OiQqjBBta6IsBGAqiiqE',
@@ -52,6 +50,7 @@ $config = [
             'rules' => array(
                 '' => 'main/home',
                 '/' => 'main/home',
+                'main/captcha' => 'main/captcha',
                 [
                     'pattern' => '<language:(en|de|nl)>/index',
                     'route' => 'main/index',

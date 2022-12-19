@@ -3,6 +3,7 @@
 /** @var yii\web\View $this */
 
 use yii\helpers\Html;
+use yii\captcha\Captcha;
 
 $this->title = 'Pay';
 ?>
@@ -23,6 +24,18 @@ $this->title = 'Pay';
                         <label for="email">Email:</label>
                         <input type="email" class="form-control mt-3" id="email" placeholder="Enter Email" name="email">
                     </div>
+                    <?php if ($order_count >= 2): ?>
+                    <div class="mb-3">
+                        <label for="email">Verify Code:</label>
+                        <?= 
+                            Captcha::widget([
+                                'captchaAction' => ['/main/captcha'],
+                                'name' => 'captcha',
+                                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                            ]);
+                        ?>
+                    </div>
+                    <?php endif ?>
                     <button type="button" id="buyNow" class="btn btn-primary">Buy Now</button>
                 </form>
             </div>
@@ -52,11 +65,14 @@ $this->title = 'Pay';
     $(":input").change(function(){
         var name = $(this).attr("name");
         var value = $(this).val();
-        localStorage.setItem(name, value);
+        if(name !== "captcha"){
+            localStorage.setItem(name, value);
+        }
     });
     $("#buyNow").click(function(){
         var firstName = $("#firstName").val();
         var email = $("#email").val();
+        var verify_code = $("input[name=captcha]").val();
         var orderId = localStorage.getItem("order_id");
         if(orderId == null || orderId == ""){
             orderId = "";
@@ -64,7 +80,13 @@ $this->title = 'Pay';
         $.ajax({
             url: "",
             method: "POST",
-            data: { _csrf: csrfToken, first_name: firstName, email: email, order_id: orderId},
+            data: { 
+                _csrf: csrfToken, 
+                first_name: firstName, 
+                email: email, 
+                order_id: orderId,
+                verifyCode: verify_code
+            },
             success: function(res){
                 var res_data = JSON.parse(res);
                 if(res_data["status"] == "success"){

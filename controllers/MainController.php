@@ -3,17 +3,44 @@
 namespace app\controllers;
 
 use Yii;
+
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use \yii\db\Expression;
+
+
 use app\controllers\Controller;
 use app\models\BuyForm;
 use app\models\CheckoutForm;
 use app\models\Country;
 use app\models\Order;
-use \yii\db\Expression;
-use yii\helpers\Url;
 
 class MainController extends Controller
 {
     public $layout = 'layout-1';
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
     
     public function actions()
     {
@@ -29,14 +56,21 @@ class MainController extends Controller
     }
 
     public function actionIndex(){
+        $ip = $this->getUserIP();
+        $order_count = Order::find()->where(["=", "ip", $ip])->count();
         if(Yii::$app->request->isPost){
             $ua = Yii::$app->request->getUserAgent();
-            $ip = $this->getUserIP();
             $result = array();
             $data = Yii::$app->request->post();
             $model = new BuyForm();
             $model->first_name = $data['first_name'];
             $model->email = $data['email'];
+            if($order_count >= 2){
+                $model->verifyCode = $data['verifyCode'];
+                $model->scenario = 'verify_code';
+            }else{
+                $model->scenario = 'usual';
+            }
             if( $model->validate() ){
                 if($data["order_id"]){
                     $order = Order::findOne($data["order_id"]);
@@ -61,8 +95,7 @@ class MainController extends Controller
             // add a new cookie to the response to be sent
             $cookies->add(new \yii\web\Cookie([
                 'name' => 'first_name',
-                'value' => $data['first_name'],
-                
+                'value' => $data['first_name'],   
             ]));
             $cookies->add(new \yii\web\Cookie([
                 'name' => 'email',
@@ -71,14 +104,15 @@ class MainController extends Controller
             return json_encode($result);
         }else{
             // $this->layout = false;
-            return $this->render("pay");
+            return $this->render("pay", ["order_count" => $order_count]);
         }        
     }
 
     public function actionCheckout(){
+        $ip = $this->getUserIP();
+        $order_count = Order::find()->where(["=", "ip", $ip])->count();
         if(Yii::$app->request->isPost){
             $ua = Yii::$app->request->getUserAgent();
-            $ip = $this->getUserIP();
             $result = array();
             $data = Yii::$app->request->post();
             $model = new CheckoutForm();
@@ -91,6 +125,12 @@ class MainController extends Controller
             $model->city = $data['city'];
             $model->zip = $data['zip'];
             $model->country = $data['country'];
+            if($order_count >= 2){
+                $model->verifyCode = $data['verifyCode'];
+                $model->scenario = 'verify_code';
+            }else{
+                $model->scenario = 'usual';
+            }
             // $model->payment_method = $data['payment_method'];
             if( $model->validate() ){
                 if($data["order_id"]){
@@ -123,7 +163,7 @@ class MainController extends Controller
             return json_encode($result);
         }else{
             $country_data = Country::find()->select(["country_id", "name"])->asArray()->all();
-            return $this->render("checkout", ['country_data' => $country_data]);
+            return $this->render("checkout", ['country_data' => $country_data, 'order_count'=>$order_count]);
         }
     }
     public function actionSuccess(){

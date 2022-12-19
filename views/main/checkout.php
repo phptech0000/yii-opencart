@@ -4,7 +4,10 @@
 
 use yii\helpers\Html;
 use app\components\CustomFunction;
+use yii\captcha\Captcha;
+
 $this->title = 'Pay';
+
 $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
 ?>
 <div class="container">
@@ -53,6 +56,18 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
                         <select class="form-select select2 mt-3" id="country_id" name="country_id">
                         </select>
                     </div>
+                    <?php if ($order_count >= 2): ?>
+                    <div class="mb-3">
+                        <label for="email">Verify Code:</label>
+                        <?= 
+                            Captcha::widget([
+                                'captchaAction' => ['/main/captcha'],
+                                'name' => 'captcha',
+                                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                            ]);
+                        ?>
+                    </div>
+                    <?php endif ?>
                     <button type="button" id="buyNow" class="btn btn-primary">Pay Now</button>
                 </form>
             </div>
@@ -201,7 +216,7 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
             placeholder: "Select a country",
             templateResult: formatCountry,
             templateSelection: formatCountry,
-            data: isoCountries
+            data: isoCountries,
         });
         var firstName = localStorage.getItem('first_name');
         var last_name = localStorage.getItem('last_name');
@@ -244,8 +259,9 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
         var street2 = $("#street2").val();
         var zip = $("#zip").val();
         var city = $("#city").val();
-        var country = $( "select option:selected" ).val();
+        var country = $( "#country_id" ).val();
         var orderId = localStorage.getItem("order_id");
+        var verify_code = $("input[name=captcha]").val();
         if( orderId == null || orderId == ""){
             orderId = "";
         }
@@ -264,6 +280,7 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
                 city: city,
                 country: country,
                 order_id: orderId,
+                verifyCode: verify_code
             },
             success: function(res){
                 var res_data = JSON.parse(res);
