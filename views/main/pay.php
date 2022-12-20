@@ -2,12 +2,34 @@
 
 /** @var yii\web\View $this */
 
-use yii\helpers\Html;
 use yii\captcha\Captcha;
-use app\components\CustomFunction;
+use yii\web\View;
 
 $this->title = 'Pay';
-$language = CustomFunction::getLang();
+
+$this->registerCssFile("@web/plugin/toastr/toastr.css", [
+    'depends' => [yii\bootstrap5\BootstrapAsset::class],
+]);
+$this->registerJsFile(
+    "@web/plugin/toastr/toastr.js",
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
+$this->registerJsFile(
+    "@web/js/pay.js",
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
+$this->registerJs(
+    '
+        $(document).ready(function(){
+            var firstName = localStorage.getItem("first_name");
+            var email = localStorage.getItem("email");
+            $("#firstName").val(firstName);
+            $("#email").val(email);
+            pay.init();
+        });
+    ',
+    View::POS_READY,
+);
 ?>
 <div class="container">
     <div class="row">
@@ -43,81 +65,4 @@ $language = CustomFunction::getLang();
             </div>
         </div>
     </div>
-    <link href="/plugin/toastr/toastr.css" rel="stylesheet" type="text/css" />
-    <script src="/plugin/toastr/toastr.js"></script>
-    <script>
-    var csrfToken = $('meta[name="csrf-token"]').attr("content");
-    toastr.options = {
-    "closeButton": true,
-    "debug": false,
-    "newestOnTop": false,
-    "progressBar": false,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": false,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
-    };
-    $(":input").change(function(){
-        var name = $(this).attr("name");
-        var value = $(this).val();
-        if(name !== "captcha"){
-            localStorage.setItem(name, value);
-        }
-    });
-    $("#buyNow").click(function(){
-        var firstName = $("#firstName").val();
-        var email = $("#email").val();
-        var verify_code = $("input[name=captcha]").val();
-        var orderId = localStorage.getItem("order_id");
-        if(orderId == null || orderId == ""){
-            orderId = "";
-        }
-        $.ajax({
-            url: "",
-            method: "POST",
-            data: { 
-                _csrf: csrfToken, 
-                first_name: firstName, 
-                email: email, 
-                order_id: orderId,
-                verifyCode: verify_code
-            },
-            success: function(res){
-                var res_data = JSON.parse(res);
-                if(res_data["status"] == "success"){
-                    localStorage.setItem("first_name", firstName);
-                    localStorage.setItem("email", email);
-                    localStorage.setItem("order_id", res_data["order_id"]);
-                    if('<?= $language ?>'){
-                        window.location = '/' + '<?= $language ?>' + '/checkout.html'
-                    }else{
-                        window.location = '/checkout.html'
-                    }      
-                }else{
-                    var messages = res_data["message"];
-                    for( var key in messages){
-                        toastr["warning"](messages[key][0]);
-                    }
-                }
-            },
-            error: function(res){
-                toastr["warning"]("Something went wrong!");
-            }
-        })
-    });
-    $(document).ready(function(){
-        var firstName = localStorage.getItem('first_name');
-        var email = localStorage.getItem('email');
-        $("#firstName").val(firstName);
-        $("#email").val(email);
-    });
-    </script>
-
 </div>

@@ -19,11 +19,16 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $sourcePath = '@app/module/admin/web';
+    // public $sourcePath = '@app/module/admin/web';
     public $css = [
+        '/css/custom.css',
+        '/plugin/toastr/toastr.css'
     ];
     public $js = [
+        '/plugin/toastr/toastr.js'
     ];
     public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap5\BootstrapAsset'
     ];
 }

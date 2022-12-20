@@ -58,7 +58,7 @@ class MainController extends Controller
 
     public function actionIndex(){
         $ip = $this->getUserIP();
-        $order_count = Order::find()->where(["=", "ip", $ip])->count();
+        $order_count = Order::find()->where(["ip" => $ip, 'order_status' => 'WaitingApproval'])->count();
         if(Yii::$app->request->isPost){
             $ua = Yii::$app->request->getUserAgent();
             $result = array();
@@ -111,7 +111,7 @@ class MainController extends Controller
 
     public function actionCheckout(){
         $ip = $this->getUserIP();
-        $order_count = Order::find()->where(["=", "ip", $ip])->count();
+        $order_count = Order::find()->where(["ip" => $ip, 'order_status' => 'WaitingApproval'])->count();
         if(Yii::$app->request->isPost){
             $ua = Yii::$app->request->getUserAgent();
             $result = array();

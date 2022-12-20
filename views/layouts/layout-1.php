@@ -1,24 +1,21 @@
 <?php
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 use app\assets\AppAsset;
 use app\components\CustomFunction;
 
 AppAsset::register($this);
-$this->registerCsrfMetaTags();
 $language = CustomFunction::getLang();
+$region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
 ?>
 <?php $this->beginPage() ?>
 <html>
     <head>
         <title><?= Html::encode($this->title) ?></title>
+        <meta name="language" content="<?= $language ?>">
+        <meta name="region" content="<?= $region ?>">
         <?= Html::csrfMetaTags() ?>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/css/custom.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        <script src="/plugin/jquery.cookie.min.js"></script>
+        <?php $this->head() ?>
     </head>
     <body>
         <div class="container mt-3">
@@ -27,7 +24,7 @@ $language = CustomFunction::getLang();
 
                 </div>
                 <div class="col-2">
-                    <select class="form-select" id="language">
+                    <select class="form-select" id="language" name="language">
                         <option value="">Default</option>
                         <option value="en">English</option>
                         <option value="de">German</option>
@@ -40,6 +37,7 @@ $language = CustomFunction::getLang();
             <?= $content ?>
         <?php $this->endBody() ?>  
     </body>
+    <script src="/plugin/jquery.cookie.min.js"></script>
     <script type="text/javascript">
         $("#language").change(function(){
             $.cookie('language', $(this).val(), { expires: 5 * 365, path: '/' });
