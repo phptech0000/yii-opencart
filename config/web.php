@@ -20,8 +20,14 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            // 'class' => 'yii\web\User',
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            // 'authTimeout' => 60*30,
+            'loginUrl' => ['admin/login'],
+            // 'identityCookie' => [
+            //     'name' => '_panelAdministrator',
+            // ]
         ],
         'errorHandler' => [
             'errorAction' => 'main/error',
@@ -51,6 +57,11 @@ $config = [
                 '' => 'main/home',
                 '/<language:(en|de|nl)>?' => 'main/home',
                 'main/captcha' => 'main/captcha',
+                'admin/?' => 'admin/main/index',
+                'admin/dashboard' => 'admin/main/dashboard',
+                'admin/user' => 'admin/main/user',
+                'admin/login' => 'admin/main/login',
+                'admin/logout' => 'admin/main/logout',
                 [
                     'pattern' => '/index',
                     'route' => 'main/index',
