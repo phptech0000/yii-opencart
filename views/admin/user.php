@@ -12,6 +12,7 @@ $this->registerJs(
     ',
     View::POS_READY,
 );
+$i = $j = $pagination->limit * $pagination->page + 1;
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -42,9 +43,6 @@ $this->registerJs(
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                                $i = $pagination->limit * $pagination->page + 1;
-                            ?>
                             <?php foreach($models as $field){ ?>
                                 <tr>
                                     <td><?= $i++ ?></td>
@@ -73,7 +71,7 @@ $this->registerJs(
             </div>
             <div class="card-footer clearfix">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="form-group">
                             <select class="form-control" style="width: 100px" id="per_page">
                                 <?php foreach($pageSizes as $item){ ?>
@@ -86,7 +84,11 @@ $this->registerJs(
                             </select>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-3" style="margin-top: 7px;">
+                        <p>Showing <?= $j ?> to <?= $i - 1 ?> of <?= $pagination->totalCount ?> entries</p>
+                    </div>
+                    <div class="col-5">
+                        
                         <?=
                             LinkPager::widget([
                                 'pagination' => $pagination,

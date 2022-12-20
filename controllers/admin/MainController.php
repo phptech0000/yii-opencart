@@ -101,7 +101,7 @@ class MainController extends Controller
         }
         $query = Order::find()->orderBy(['date' => SORT_DESC]);
         $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize, 'defaultPageSize' => $pageSizes[0] ]);
         $models = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
