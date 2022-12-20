@@ -42,6 +42,7 @@ class Order extends ActiveRecord
             'payment_method' => 'Payment Method',
             'ua' => 'UA',
             'ip' => 'IP',
+            'uoi' => 'Unique Order Identifier',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
 		);

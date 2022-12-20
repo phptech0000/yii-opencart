@@ -7,16 +7,17 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use \yii\db\Expression;
-
+use yii\data\Pagination;
 
 use app\controllers\Controller;
 use app\models\LoginForm;
+use app\models\Order;
 use app\models\User;
 
 class MainController extends Controller
 {
     public $layout = '@vendor/hail812/yii2-adminlte3/src/views/layouts/main';
-    
+
     public function behaviors()
     {
         return [
@@ -92,6 +93,19 @@ class MainController extends Controller
     }
 
     public function actionUser(){
-        return $this->render('@app/views/admin/user');
+        $pageSizes = [5, 10, 15, 20];
+        if($_GET['per-page']){
+            $pageSize = $_GET['per-page'];
+        }else{
+            $pageSize = $pageSizes[0];
+        }
+        $query = Order::find()->orderBy(['date' => SORT_DESC]);
+        $countQuery = clone $query;
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize]);
+        $models = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+        return $this->render('@app/views/admin/user',[
+            'models' => $models, 'pagination' => $pagination, 'pageSizes' => $pageSizes]);
     }
 }
