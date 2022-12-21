@@ -11,6 +11,7 @@ class Controller extends \yii\web\Controller
         }
         parent::init();
     }
+
     public function getUserIP(){
         $ip = "";
         if(isset($_SERVER["HTTP_CF_CONNECTING_IP"])){
@@ -19,5 +20,13 @@ class Controller extends \yii\web\Controller
             $ip = $_SERVER["REMOTE_ADDR"];
         }
         return $ip;
+    }
+
+    public function getLang(){
+        $lang = "en";
+        if(Yii::$app->language !== ""){
+            $lang = Yii::$app->language;
+        }
+        return $lang;
     }
 }

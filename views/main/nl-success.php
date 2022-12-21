@@ -14,7 +14,7 @@ $this->title = 'Success';
         <div class="col-6">
             <div class="mt-5">
                 <h1 class="text-center">
-                    Check out successfully!
+                    Check out successfully! (NL)
                 </h1>
             </div>
         </div>

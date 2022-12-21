@@ -93,7 +93,6 @@ class MainController extends Controller
                 $result["message"] = $model->errors;
             }
             $cookies = Yii::$app->response->cookies;
-            // add a new cookie to the response to be sent
             $cookies->add(new \yii\web\Cookie([
                 'name' => 'first_name',
                 'value' => $data['first_name'],   
@@ -105,7 +104,7 @@ class MainController extends Controller
             return json_encode($result);
         }else{
             // $this->layout = false;
-            return $this->render("pay", ["order_count" => $order_count]);
+            return $this->render($this->getLang()."-pay", ["order_count" => $order_count]);
         }        
     }
 
@@ -164,11 +163,11 @@ class MainController extends Controller
             return json_encode($result);
         }else{
             $country_data = Country::find()->select(["country_id", "name"])->asArray()->all();
-            return $this->render("checkout", ['country_data' => $country_data, 'order_count'=>$order_count]);
+            return $this->render($this->getLang()."-checkout", ['country_data' => $country_data, 'order_count'=>$order_count]);
         }
     }
     public function actionSuccess(){
-        return $this->render("success");
+        return $this->render($this->getLang()."-success");
     }
 
     public function actionHome(){
