@@ -63,6 +63,8 @@ $config = [
                 'admin/lang/create' => 'admin/main/lang-create',
                 'admin/lang/edit/<id:\d+>' => 'admin/main/lang-edit',
                 'admin/lang/delete/<id:\d+>' => 'admin/main/lang-delete',
+                'admin/page' => 'admin/main/page',
+                'admin/page/edit' => 'admin/main/page-edit',
                 'admin/user' => 'admin/main/user',
                 'admin/login' => 'admin/main/login',
                 'admin/logout' => 'admin/main/logout',
@@ -72,7 +74,7 @@ $config = [
                     'suffix' => '.html',
                 ], 
                 [
-                    'pattern' => '<language:(en|de|nl)>/index',
+                    'pattern' => '<language:\w+>/index',
                     'route' => 'main/index',
                     'suffix' => '.html',
                 ],
@@ -82,7 +84,7 @@ $config = [
                     'suffix' => '.html',
                 ],   
                 [
-                    'pattern' => '<language:(en|de|nl)>/checkout',
+                    'pattern' => '<language:\w+>/checkout',
                     'route' => 'main/checkout',
                     'suffix' => '.html',
                 ], 
@@ -92,7 +94,7 @@ $config = [
                     'suffix' => '.html',
                 ],
                 [
-                    'pattern' => '<language:(en|de|nl)>/success',
+                    'pattern' => '<language:\w+>/success',
                     'route' => 'main/success',
                     'suffix' => '.html',
                 ],   

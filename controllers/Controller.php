@@ -1,14 +1,18 @@
 <?php    
 namespace app\controllers;
+
+use app\models\Language;
 use Yii;
 class Controller extends \yii\web\Controller
 {
+    public $lang;
     public function init(){
         if (!empty($_GET['language'])){
             Yii::$app->language = $_GET['language'];
         }else{
             Yii::$app->language = '';
         }
+        $this->lang = Language::find()->select(["lang_code", "lang"])->asArray()->all();
         parent::init();
     }
 

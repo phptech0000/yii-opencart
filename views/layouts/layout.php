@@ -18,6 +18,7 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
         <?php $this->head() ?>
     </head>
     <body>
+        
         <div class="container mt-3">
             <div class="row">
                 <div class="col-7">
@@ -26,9 +27,9 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
                 <div class="col-2">
                     <select class="form-select" id="language" name="language">
                         <option value="">Default</option>
-                        <option value="en">English</option>
-                        <option value="de">German</option>
-                        <option value="nl">Dutch</option>
+                        <?php foreach($this->context->lang as $item){ ?>
+                            <option value="<?= $item["lang_code"] ?>"><?= $item["lang"] ?></option>
+                        <?php } ?>
                     </select>
                 </div>
             </div>

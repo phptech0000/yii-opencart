@@ -14,7 +14,7 @@ use app\models\LoginForm;
 use app\models\Order;
 use app\models\User;
 use app\models\Language;
-use app\models\LanguageForm;
+use app\models\Page;
 
 class MainController extends Controller
 {
@@ -112,8 +112,8 @@ class MainController extends Controller
     }
 
     public function actionLang(){
-            $lang = Language::find()->all();
-            return $this->render('@app/views/admin/lang', ["lang" => $lang]);
+        $lang = Language::find()->all();
+        return $this->render('@app/views/admin/lang', ["lang" => $lang]);
     }
 
     public function actionLangCreate(){
@@ -157,5 +157,24 @@ class MainController extends Controller
         unlink($url."/".$model->lang_code."-success.php");
         $model->delete();
         return $this->redirect("/admin/lang");
+    }
+
+    public function actionPage(){
+        $url = Yii::getAlias('@app/views/main');
+        $files = scandir($url);
+        return $this->render('@app/views/admin/page', ["files" => $files]);
+    }
+
+    public function actionPageEdit(){
+        $url = Yii::getAlias('@app/views/main') . "/" . $_GET['file'];
+        $data = file_get_contents($url);
+        $model = new Page();
+        $model->content = htmlspecialchars($data,ENT_HTML5);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $content = Yii::$app->request->post("Page")["content"];
+            file_put_contents($url,$content);
+            return $this->redirect("/admin/page");
+        }
+        return $this->render('@app/views/admin/page_edit', ["model" => $model]);
     }
 }

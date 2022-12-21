@@ -12,13 +12,13 @@ use \yii\db\Expression;
 use app\controllers\Controller;
 use app\models\BuyForm;
 use app\models\CheckoutForm;
-use app\models\Country;
+use app\models\Language;
 use app\models\Order;
 use app\components\CustomFunction;
 
 class MainController extends Controller
 {
-    public $layout = 'layout-1';
+    public $layout = 'layout';
 
     public function behaviors()
     {
@@ -104,7 +104,7 @@ class MainController extends Controller
             return json_encode($result);
         }else{
             // $this->layout = false;
-            return $this->render($this->getLang()."-pay", ["order_count" => $order_count]);
+            return $this->render($this->getLang()."-index", ["order_count" => $order_count]);
         }        
     }
 
@@ -162,8 +162,8 @@ class MainController extends Controller
             }
             return json_encode($result);
         }else{
-            $country_data = Country::find()->select(["country_id", "name"])->asArray()->all();
-            return $this->render($this->getLang()."-checkout", ['country_data' => $country_data, 'order_count'=>$order_count]);
+            // $country_data = Country::find()->select(["country_id", "name"])->asArray()->all();
+            return $this->render($this->getLang()."-checkout", ['order_count'=>$order_count]);
         }
     }
     public function actionSuccess(){
