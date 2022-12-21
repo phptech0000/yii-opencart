@@ -74,9 +74,16 @@ $i = $j = $pagination->limit * $pagination->page + 1;
                     <div class="col-4">
                         <div class="form-group">
                             <select class="form-control" style="width: 100px" id="per_page">
+                                <?php
+                                    if(!empty($_GET['per-page'])){
+                                        $pageSize = $_GET['per-page'];
+                                    }else{
+                                        $pageSize = $pageSizes[0];
+                                    }
+                                ?>
                                 <?php foreach($pageSizes as $item){ ?>
                                     <option value="<?= $item ?>" 
-                                    <?php if($item == $_GET['per-page']){ ?>
+                                    <?php if($item == $pageSize){ ?>
                                         selected
                                     <?php } ?>
                                     ><?= $item ?></option>

@@ -13,6 +13,8 @@ use app\controllers\Controller;
 use app\models\LoginForm;
 use app\models\Order;
 use app\models\User;
+use app\models\Language;
+use app\models\LanguageForm;
 
 class MainController extends Controller
 {
@@ -94,7 +96,7 @@ class MainController extends Controller
 
     public function actionUser(){
         $pageSizes = [5, 10, 15, 20];
-        if($_GET['per-page']){
+        if(!empty($_GET['per-page'])){
             $pageSize = $_GET['per-page'];
         }else{
             $pageSize = $pageSizes[0];
@@ -107,5 +109,53 @@ class MainController extends Controller
             ->all();
         return $this->render('@app/views/admin/user',[
             'models' => $models, 'pagination' => $pagination, 'pageSizes' => $pageSizes]);
+    }
+
+    public function actionLang(){
+            $lang = Language::find()->all();
+            return $this->render('@app/views/admin/lang', ["lang" => $lang]);
+    }
+
+    public function actionLangCreate(){
+        $model = new Language();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->save();
+            $url = Yii::getAlias('@app/views/main');
+            file_put_contents($url."/".$model->lang_code."-index.php", "");
+            file_put_contents($url."/".$model->lang_code."-checkout.php", "");
+            file_put_contents($url."/".$model->lang_code."-success.php", "");
+            return $this->redirect("/admin/lang");
+        }
+        return $this->render('@app/views/admin/lang_create', ["model" => $model]);
+    }
+
+    public function actionLangEdit(){
+        $model = Language::find()->where(['id' => $_GET["id"] ])->one();
+        $pre_lang = $model->lang_code;
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->save();
+            $url = Yii::getAlias('@app/views/main');
+            $index = file_get_contents($url."/".$pre_lang."-index.php");
+            $checkout = file_get_contents($url."/".$pre_lang."-checkout.php");
+            $success = file_get_contents($url."/".$pre_lang."-success.php");
+            file_put_contents($url."/".$model->lang_code."-index.php", $index);
+            file_put_contents($url."/".$model->lang_code."-checkout.php", $checkout);
+            file_put_contents($url."/".$model->lang_code."-success.php", $success);
+            unlink($url."/".$pre_lang."-index.php");
+            unlink($url."/".$pre_lang."-checkout.php");
+            unlink($url."/".$pre_lang."-success.php");
+            return $this->redirect("/admin/lang");
+        }
+        return $this->render('@app/views/admin/lang_create', ["model" => $model]);
+    }
+
+    public function actionLangDelete(){
+        $model = Language::find()->where(['id' => $_GET["id"] ])->one();
+        $url = Yii::getAlias('@app/views/main');
+        unlink($url."/".$model->lang_code."-index.php");
+        unlink($url."/".$model->lang_code."-checkout.php");
+        unlink($url."/".$model->lang_code."-success.php");
+        $model->delete();
+        return $this->redirect("/admin/lang");
     }
 }
