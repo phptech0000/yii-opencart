@@ -27,7 +27,8 @@ class Controller extends \yii\web\Controller
     }
 
     public function getLang(){
-        $lang = "en";
+        $default_lang = Language::find()->where(["is_default" => 1])->one();
+        $lang = $default_lang->lang_code;
         if(Yii::$app->language !== ""){
             $lang = Yii::$app->language;
         }

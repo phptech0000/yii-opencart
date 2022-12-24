@@ -12,6 +12,7 @@ $this->title = 'Success';
 
         </div>
         <div class="col-6">
+        <h1>EN</h1>
             <div class="mt-5">
                 <h1 class="text-center">
                     Check out successfully! (EN)

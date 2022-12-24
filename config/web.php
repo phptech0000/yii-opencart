@@ -63,6 +63,7 @@ $config = [
                 'admin/lang/create' => 'admin/main/lang-create',
                 'admin/lang/edit/<id:\d+>' => 'admin/main/lang-edit',
                 'admin/lang/delete/<id:\d+>' => 'admin/main/lang-delete',
+                'admin/lang/default/<id:\d+>' => 'admin/main/is-default',
                 'admin/page' => 'admin/main/page',
                 'admin/page/edit' => 'admin/main/page-edit',
                 'admin/user' => 'admin/main/user',

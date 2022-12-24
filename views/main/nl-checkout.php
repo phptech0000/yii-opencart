@@ -184,10 +184,12 @@ $this->registerJs(
 ?>
 <div class="container">
     <div class="row">
+
         <div class="col-3">
 
         </div>
         <div class="col-6">
+        <h1>NL</h1>
             <div class="mt-5">
                 <form>
                     <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />

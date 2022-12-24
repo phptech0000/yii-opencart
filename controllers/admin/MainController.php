@@ -171,10 +171,23 @@ class MainController extends Controller
         $model = new Page();
         $model->content = htmlspecialchars($data,ENT_HTML5);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $content = Yii::$app->request->post("Page")["content"];
+            $content = htmlspecialchars_decode(Yii::$app->request->post("Page")["content"]);
             file_put_contents($url,$content);
             return $this->redirect("/admin/page");
         }
         return $this->render('@app/views/admin/page_edit', ["model" => $model]);
+    }
+
+    public function actionIsDefault(){
+        $lang = Language::find()->all();
+        foreach($lang as $item){
+            if($item->id == $_GET["id"]){
+                $item->is_default = 1;
+            }else{
+                $item->is_default = 0;
+            }
+            $item->save();
+        }
+        return $this->redirect("/admin/lang");
     }
 }

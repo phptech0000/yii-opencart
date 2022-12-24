@@ -6,14 +6,16 @@ use yii\web\View;
 $i = 1;
 
 $this->title = 'Language';
-// $this->registerJs(
-//     '
-//     $(\'#per_page\').change(function(){
-//         window.location.href = "/admin/user?page=1&per-page=" + $(\'#per_page\').val();
-//     })
-//     ',
-//     View::POS_READY,
-// );
+$this->registerJs(
+    '
+    $(\'select[name=default]\').change(function(){
+        if($(this).val() == 1){
+            window.location.href = "/admin/lang/default/" + $(this).attr("data-id");
+        }
+    })
+    ',
+    View::POS_READY,
+);
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -32,6 +34,7 @@ $this->title = 'Language';
                                     <th>#</th>
                                     <th>Language Code</th>
                                     <th>Language</th>
+                                    <th>Is Default</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -42,7 +45,13 @@ $this->title = 'Language';
                                     <td><?= $field->lang_code ?></td>
                                     <td><?= $field->lang ?></td>
                                     <td>
-                                        <?php if($field->lang_code !== "en"){ ?>
+                                        <select class="form-control" name="default" data-id="<?php echo $field->id ?>">
+                                            <option value=0 <?php if($field->is_default === 0){ ?> selected <?php } ?>>FALSE</option>
+                                            <option value=1 <?php if($field->is_default === 1){ ?> selected <?php } ?>>TRUE</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <?php if(!$field->is_default){ ?>
                                         <div class="row">
                                             <div class="col-6">
                                                 <a type="button" href="/admin/lang/edit/<?= $field->id ?>" class="btn btn-block btn-primary">
