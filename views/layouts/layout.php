@@ -5,6 +5,7 @@ use app\assets\AppAsset;
 use app\components\CustomFunction;
 
 AppAsset::register($this);
+$defaultLanguage = CustomFunction::getDefaultLang();
 $language = CustomFunction::getLang();
 $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
 ?>
@@ -41,17 +42,20 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
     <script src="/plugin/jquery.cookie.min.js"></script>
     <script type="text/javascript">
         $("#language").change(function(){
-            $.cookie('language', $(this).val(), { expires: 5 * 365, path: '/' });
             var currentUrl = "<?= Yii::$app->request->url ?>";
-            if($(this).val()){
+            if($(this).val() && ( $(this).val() !== "<?= $defaultLanguage  ?>")){
                 currentUrl = currentUrl.replace("<?= $language ?>", $(this).val());
             }else{
-                currentUrl = "/index.html";
+                if(currentUrl.startsWith("/" + $.cookie('language') + "/")){
+                    currentUrl = currentUrl.substr(3);
+                }  
             }
+            $.cookie('language', $(this).val(), { expires: 5 * 365, path: '/', sameSite: 'Lax', secure: false });
             window.location.href = currentUrl;
         })
         $(document).ready(function(){
-            $("#language").val("<?= $language ?>");
+            var language = $.cookie('language');
+            $("#language").val(language);
         });
     </script>
 </html>

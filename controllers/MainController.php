@@ -171,8 +171,9 @@ class MainController extends Controller
     }
 
     public function actionHome(){
+        $default_language = CustomFunction::getDefaultLang();
         if(isset($_COOKIE["language"])){
-            if($_COOKIE["language"]){
+            if($_COOKIE["language"] && ($_COOKIE["language"] !== $default_language)){
                 $url = "/" . $_COOKIE["language"] . "/index.html";
             }else{
                 $url = "/index.html";
