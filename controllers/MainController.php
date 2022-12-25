@@ -172,9 +172,13 @@ class MainController extends Controller
 
     public function actionHome(){
         if(isset($_COOKIE["language"])){
-            $url = "/" . $_COOKIE["language"] . "/index.html";
+            if($_COOKIE["language"]){
+                $url = "/" . $_COOKIE["language"] . "/index.html";
+            }else{
+                $url = "/index.html";
+            }
         }else{
-            $url = "/" . Yii::$app->language . "/index.html";
+            $url = "/index.html";
         }
         return $this->redirect($url);
     }

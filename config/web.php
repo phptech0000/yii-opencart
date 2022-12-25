@@ -55,8 +55,6 @@ $config = [
             'enableStrictParsing' => true,
             'rules' => array(
                 '' => 'main/home',
-                '/<language:\w+>/?' => 'main/home',
-                'main/captcha' => 'main/captcha',
                 'admin/?' => 'admin/main/index',
                 'admin/dashboard' => 'admin/main/dashboard',
                 'admin/lang' => 'admin/main/lang',
@@ -69,6 +67,8 @@ $config = [
                 'admin/user' => 'admin/main/user',
                 'admin/login' => 'admin/main/login',
                 'admin/logout' => 'admin/main/logout',
+                '/<language:\w+>/?' => 'main/home',
+                'main/captcha' => 'main/captcha',
                 [
                     'pattern' => '/index',
                     'route' => 'main/index',

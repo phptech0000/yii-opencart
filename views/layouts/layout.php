@@ -46,7 +46,7 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
             if($(this).val()){
                 currentUrl = currentUrl.replace("<?= $language ?>", $(this).val());
             }else{
-                currentUrl = currentUrl.replace("/" + "<?= $language ?>", $(this).val());
+                currentUrl = "/index.html";
             }
             window.location.href = currentUrl;
         })
