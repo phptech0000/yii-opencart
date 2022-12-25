@@ -10,11 +10,13 @@ $language = CustomFunction::getLang();
 $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUserCountry();
 ?>
 <?php $this->beginPage() ?>
+<!DOCTYPE html>
 <html>
     <head>
         <title><?= Html::encode($this->title) ?></title>
         <meta name="language" content="<?= $language ?>">
         <meta name="region" content="<?= $region ?>">
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <?= Html::csrfMetaTags() ?>
         <?php $this->head() ?>
     </head>
