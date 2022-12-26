@@ -8,18 +8,18 @@ class Controller extends \yii\web\Controller
     public $lang;
     public function init(){
         $this->lang = Language::find()->select(["lang_code", "lang"])->asArray()->all();
-        if(isset($_GET['language'])){
-            $language = $_GET['language'];
-        }else{
-            $language = "";
-        }
+        // if(isset($_GET['language'])){
+        //     $language = $_GET['language'];
+        // }else{
+        //     $language = "";
+        // }
         
         parent::init();
-        $default_language = Language::find()->where(["is_default" => 1])->one();
-        if( $language == $default_language->lang_code){
-            $url = substr(Yii::$app->request->url, 3);
-            return $this->redirect($url);
-        }
+        // $default_language = Language::find()->where(["is_default" => 1])->one();
+        // if( $language == $default_language->lang_code){
+        //     $url = substr(Yii::$app->request->url, 3);
+        //     return $this->redirect($url);
+        // }
         
     }
 

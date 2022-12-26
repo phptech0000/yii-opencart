@@ -26,10 +26,10 @@ class MainController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'dashboard', 'user', 'page', 'lang'],
+                'only' => ['logout', 'dashboard', 'order', 'page', 'lang'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'dashboard', 'user', 'page', 'lang'],
+                        'actions' => ['logout', 'dashboard', 'order', 'page', 'lang'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
