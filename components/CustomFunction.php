@@ -28,6 +28,14 @@ class CustomFunction
         return $language;
     }
 
+    public static function getGetLang(){
+        $language = "";
+        if(isset($_GET["language"])){
+            $language = $_GET["language"];
+        }
+        return $language;
+    }
+
     public static function getDefaultLang(){
         $lang = Language::find()->where(["is_default" => 1 ])->one();
         return $lang->lang_code;
