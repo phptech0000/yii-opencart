@@ -52,7 +52,7 @@ $region = CustomFunction::getUserCountry() == "" ? "XX" : CustomFunction::getUse
                     currentUrl = currentUrl.substr(3);
                 }  
             }
-            $.cookie('language', $(this).val(), { expires: 5 * 365, path: '/', sameSite: 'Lax', secure: false });
+            $.cookie('language', $(this).val(), { expires: 5 * 365, path: '/', sameSite: 'Lax', secure: true });
             window.location.href = currentUrl;
         })
         $(document).ready(function(){

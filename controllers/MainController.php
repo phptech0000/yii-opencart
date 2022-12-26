@@ -95,11 +95,13 @@ class MainController extends Controller
             $cookies = Yii::$app->response->cookies;
             $cookies->add(new \yii\web\Cookie([
                 'name' => 'first_name',
-                'value' => $data['first_name'],   
+                'value' => $data['first_name'], 
+                'secure' => true,  
             ]));
             $cookies->add(new \yii\web\Cookie([
                 'name' => 'email',
                 'value' => $data['email'],
+                'secure' => true,
             ]));
             return json_encode($result);
         }else{

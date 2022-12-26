@@ -15,6 +15,18 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'b_OBWIyY6Lu9OiQqjBBta6IsBGAqiiqE',
+            'csrfCookie' => [
+                'httpOnly' => true,
+                'secure' => true,
+            ],
+        ],
+        'session' => [
+            'class' => 'yii\web\Session',
+            'timeout' => '600',
+            'cookieParams' => [
+                'httpOnly' => true,
+                'secure' => true,
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
