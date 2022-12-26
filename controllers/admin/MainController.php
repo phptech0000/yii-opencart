@@ -15,6 +15,7 @@ use app\models\Order;
 use app\models\User;
 use app\models\Language;
 use app\models\Page;
+use app\models\PageForm;
 
 class MainController extends Controller
 {
@@ -160,9 +161,22 @@ class MainController extends Controller
     }
 
     public function actionPage(){
+        $tmp = [];
         $url = Yii::getAlias('@app/views/main');
+        $language = Language::find()->select(["lang_code", "lang"])->asArray()->all();
+        foreach($language as $item){
+            array_push($tmp, [$item["lang_code"] => $item["lang"]]);
+        }
         $files = scandir($url);
-        return $this->render('@app/views/admin/page', ["files" => $files]);
+        $model = new PageForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $lang_code = Yii::$app->request->post("PageForm")["lang_code"];
+            $file_name = Yii::$app->request->post("PageForm")["file_name"];
+            $url = $url . "/" . $lang_code . "-" . $file_name . ".php";
+            file_put_contents($url, "");
+            return $this->redirect("/admin/page");
+        }
+        return $this->render('@app/views/admin/page', ["files" => $files, "model" => $model, 'language' => $tmp]);
     }
 
     public function actionPageEdit(){
@@ -176,6 +190,12 @@ class MainController extends Controller
             return $this->redirect("/admin/page");
         }
         return $this->render('@app/views/admin/page_edit', ["model" => $model]);
+    }
+
+    public function actionPageDelete(){
+        $url = Yii::getAlias('@app/views/main') . "/" . $_GET['file'];
+        unlink($url);
+        return $this->redirect("/admin/page");
     }
 
     public function actionIsDefault(){

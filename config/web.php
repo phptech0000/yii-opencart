@@ -64,6 +64,7 @@ $config = [
                 'admin/lang/default/<id:\d+>' => 'admin/main/is-default',
                 'admin/page' => 'admin/main/page',
                 'admin/page/edit' => 'admin/main/page-edit',
+                'admin/page/delete' => 'admin/main/page-delete',
                 'admin/user' => 'admin/main/user',
                 'admin/login' => 'admin/main/login',
                 'admin/logout' => 'admin/main/logout',
