@@ -95,7 +95,13 @@ class MainController extends Controller
         return $this->render('@app/views/admin/dashboard');
     }
 
-    public function actionUser(){
+    public function actionOrder(){
+        $getParams = [];
+        if(isset($_GET)){
+            foreach($_GET as $getKey => $getValue){
+                $getParams[$getKey] = $getValue;
+            }
+        }
         $pageSizes = [5, 10, 15, 20];
         if(!empty($_GET['per-page'])){
             $pageSize = $_GET['per-page'];
@@ -103,8 +109,28 @@ class MainController extends Controller
             $pageSize = $pageSizes[0];
         }
         $query = Order::find()->orderBy(['date' => SORT_DESC]);
+        if(isset($_GET["from"]) || isset($_GET["to"])){
+            if($_GET["from"] && $_GET["to"]){
+                $query = $query
+                ->where(['between', 'date', $getParams["from"], $getParams["to"]]);
+            }else{
+                if($_GET["from"]){
+                    $query = $query->andFilterWhere(['>=', 'date', $getParams["from"]]);
+                }
+                if($_GET["to"]){
+                    $query = $query->andFilterWhere(['<=', 'date', $getParams["to"]]);
+                }
+            }
+            
+            
+        }
         $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $pageSize, 'defaultPageSize' => $pageSizes[0] ]);
+        $pagination = new Pagination([
+            'totalCount' => $countQuery->count(), 
+            'pageSize' => $pageSize, 
+            'defaultPageSize' => $pageSizes[0],
+            'params' => $getParams
+        ]);
         $models = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();

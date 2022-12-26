@@ -3,21 +3,67 @@
 use yii\bootstrap4\LinkPager;
 use yii\web\View;
 
-$this->title = 'User';
+$this->title = 'Order';
 $this->registerJs(
     '
     $(\'#per_page\').change(function(){
-        window.location.href = "/admin/user?page=1&per-page=" + $(\'#per_page\').val();
+        var from = $("#from").val();
+        var to = $("#to").val();
+        window.location.href = "/admin/order?page=1&per-page=" + $(\'#per_page\').val() + "&from=" + from + "&to=" + to;
+    })
+    $("#showAll").click(function(){
+        window.location.href = "/admin/order?page=1&per-page=" + $(\'#per_page\').val()+ "&from=" + "&to=";
+    })
+    $("#showByDate").click(function(){
+        var from = $("#from").val();
+        var to = $("#to").val();
+        window.location.href = "/admin/order?page=1&per-page=" + $(\'#per_page\').val() + "&from=" + from + "&to=" + to;
     })
     ',
     View::POS_READY,
 );
+$from = isset($_GET["from"]) ? $_GET["from"] : "";
+$to = isset($_GET["to"]) ? $_GET["to"] : "";
 $i = $j = $pagination->limit * $pagination->page + 1;
 ?>
 <div class="container-fluid">
     <div class="row">
         <div class="card">
             <div class="card-body">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group row">
+                                        <label for="from" class="col-sm-4 col-form-label">From : </label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control" id="from" placeholder="From" value="<?= $from ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group row">
+                                        <label for="to" class="col-sm-4 col-form-label">To : </label>
+                                        <div class="col-sm-8">
+                                            <input type="date" class="form-control" id="to" placeholder="To" value="<?= $to ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" id="showByDate" class="btn btn-block btn-danger">
+                                        Show By Date
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" id="showAll" class="btn btn-block btn-danger">
+                                        All
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-12" style="overflow: auto;">
                     <table class="table table-bordered">
                         <thead>
@@ -103,6 +149,7 @@ $i = $j = $pagination->limit * $pagination->page + 1;
                                 'maxButtonCount' => 6,
                                 'firstPageLabel' => 'First',
                                 'lastPageLabel' => 'Last',
+                                
                             ]);
                         ?>
                     </div>
