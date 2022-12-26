@@ -2,21 +2,29 @@
 
 use yii\bootstrap4\LinkPager;
 use yii\web\View;
+use yii\jui\DatePicker;
 
 $this->title = 'Order';
 $this->registerJs(
     '
+    function changeDateFormat(dataStr){
+        return dataStr.split("/").reverse().join("-");
+    }
     $(\'#per_page\').change(function(){
-        var from = $("#from").val();
-        var to = $("#to").val();
+        var from = $("input[name=from]").val();
+        var to = $("input[name=to]").val();
+        from = changeDateFormat(from);
+        to = changeDateFormat(to);
         window.location.href = "/admin/order?page=1&per-page=" + $(\'#per_page\').val() + "&from=" + from + "&to=" + to;
     })
     $("#showAll").click(function(){
         window.location.href = "/admin/order?page=1&per-page=" + $(\'#per_page\').val()+ "&from=" + "&to=";
     })
     $("#showByDate").click(function(){
-        var from = $("#from").val();
-        var to = $("#to").val();
+        var from = $("input[name=from]").val();
+        var to = $("input[name=to]").val();
+        from = changeDateFormat(from);
+        to = changeDateFormat(to);
         window.location.href = "/admin/order?page=1&per-page=" + $(\'#per_page\').val() + "&from=" + from + "&to=" + to;
     })
     ',
@@ -38,7 +46,12 @@ $i = $j = $pagination->limit * $pagination->page + 1;
                                     <div class="form-group row">
                                         <label for="from" class="col-sm-4 col-form-label">From : </label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="from" placeholder="From" value="<?= $from ?>">
+                                            <?php echo DatePicker::widget([
+                                                    'name'  => 'from',
+                                                    'value'  => $from,
+                                                    'dateFormat' => 'dd/MM/yyyy',
+                                                ]);
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -46,7 +59,12 @@ $i = $j = $pagination->limit * $pagination->page + 1;
                                     <div class="form-group row">
                                         <label for="to" class="col-sm-4 col-form-label">To : </label>
                                         <div class="col-sm-8">
-                                            <input type="date" class="form-control" id="to" placeholder="To" value="<?= $to ?>">
+                                            <?php echo DatePicker::widget([
+                                                    'name'  => 'to',
+                                                    'value'  => $to,
+                                                    'dateFormat' => 'dd/MM/yyyy',
+                                                ]);
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
